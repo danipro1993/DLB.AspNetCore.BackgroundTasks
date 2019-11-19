@@ -19,9 +19,8 @@ First, we need register necesary dependencies, this is achived calling a method 
 
     public IServiceProvider ConfigureServices(IServiceCollection services)
     {
-	    //HostedServices and Queue
-        services.AddHostedService<QueuedHostedService>();
-        services.AddSingleton<IBackgroundTaskQueue,BackgroundTaskQueue>();
+	//HostedServices and Queue
+        services.AddBackgroundQueue();
     }
 
 That is all! If we need generate a new task in background, only need inyect in constructor IBackgroundTaskQueue interface.
