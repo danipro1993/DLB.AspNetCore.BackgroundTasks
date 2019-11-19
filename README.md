@@ -98,6 +98,6 @@ Background task without parameters
         {
             var userAppService = scope.ServiceProvider.GetService<IUserAppService>();
 
-            await userAppService.SomeMethod(Payload.Info)
+            await userAppService.SomeMethod()
         }
 	}
