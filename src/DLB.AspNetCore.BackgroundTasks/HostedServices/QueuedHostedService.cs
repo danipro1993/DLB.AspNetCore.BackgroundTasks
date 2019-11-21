@@ -17,16 +17,16 @@ namespace DLB.AspNetCore.BackgroundTasks.HostedServices
         private Task _backgroundTask;
         private readonly ILogger<QueuedHostedService> _logger;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IBackgroundTaskQueue _taskQueue;
 
-        public QueuedHostedService(IBackgroundTaskQueue taskQueue, ILogger<QueuedHostedService> logger, IServiceProvider serviceProvider)
+        public QueuedHostedService(IBackgroundTaskQueue taskQueue, 
+                                   ILogger<QueuedHostedService> logger, 
+                                   IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-
-            TaskQueue = taskQueue;
-            _logger = logger;            
+            _taskQueue = taskQueue ?? throw new ArgumentNullException(nameof(taskQueue));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));            
         }
-
-        public IBackgroundTaskQueue TaskQueue { get; }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -52,14 +52,12 @@ namespace DLB.AspNetCore.BackgroundTasks.HostedServices
             {
                 using(var scope = _serviceProvider.CreateScope())
                 {
-                    var workTask = await TaskQueue.DequeueAsync(scope, _shutdown.Token);
+                    var workTask = await _taskQueue.DequeueAsync(scope, _shutdown.Token);
 
                     try
                     {
                         if(workTask != null)
                             await workTask.ExecuteAsync(scope, _shutdown.Token);
-
-                        //await workItem(scope, _shutdown.Token);
                     }
                     catch (Exception ex)
                     {

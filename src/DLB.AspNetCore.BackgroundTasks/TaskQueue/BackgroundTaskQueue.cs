@@ -2,8 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -59,17 +57,5 @@ namespace DLB.AspNetCore.BackgroundTasks.TaskQueue
 
             return backgroundTask;
         }
-
-        //public async Task<Func<IServiceScope, CancellationToken, Task>> DequeueAsync(IServiceScope scope, CancellationToken cancellationToken)
-        //{
-        //    await _signal.WaitAsync(cancellationToken);
-        //    _workItems.TryDequeue(out var workItem);
-
-        //    return workItem;
-        //}
-    }
-
-    public class QueueTask
-    {
     }
 }

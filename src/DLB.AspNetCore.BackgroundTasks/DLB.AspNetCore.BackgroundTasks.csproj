@@ -5,6 +5,11 @@
     <Description>Execute task in background with new scope</Description>
     <Copyright>Daniel López Bayo</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/danipro1993/DLB.AspNetCore.BackgroundTasks</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/danipro1993/DLB.AspNetCore.BackgroundTasks</RepositoryUrl>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
