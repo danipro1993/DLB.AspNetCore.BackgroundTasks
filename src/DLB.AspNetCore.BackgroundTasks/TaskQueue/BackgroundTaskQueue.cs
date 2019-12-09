@@ -19,34 +19,55 @@ namespace DLB.AspNetCore.BackgroundTasks.TaskQueue
 
         public void QueueBackgroundWorkItem(Func<IServiceScope, CancellationToken, Task> workItem)
         {
-            if (workItem == null)
-            {
-                throw new ArgumentNullException(nameof(workItem));
-            }
 
-            _workItems.Enqueue(workItem);
-            _signal.Release();
+            WithSignalRelease(() =>
+            {
+                if (workItem == null)
+                {
+                    throw new ArgumentNullException(nameof(workItem));
+                }
+
+                _workItems.Enqueue(workItem);
+            });
         }
 
         public void QueueBackgroundTask<TBackgroundTask, TData>(TData payload)
             where TData : class
             where TBackgroundTask : IBackgroundDataTask<TData>
         {
-            var instance = (IBackgroundDataTask<TData>)Activator.CreateInstance(typeof(TBackgroundTask));
+            WithSignalRelease(() =>
+            {
+                var instance = (IBackgroundDataTask<TData>)Activator.CreateInstance(typeof(TBackgroundTask));
 
-            instance.Payload = payload;
+                instance.Payload = payload;
 
-            _workTask.Enqueue(instance);
-            _signal.Release();
+                _workTask.Enqueue(instance);
+            });
+
         }
 
         public void QueueBackgroundTask<TBackgroundTask>()
             where TBackgroundTask : IBackgroundTask
         {
-            var instance = (IBackgroundTask)Activator.CreateInstance(typeof(TBackgroundTask));
+            WithSignalRelease(() =>
+            {
+                var instance = (IBackgroundTask)Activator.CreateInstance(typeof(TBackgroundTask));
 
-            _workTask.Enqueue(instance);
-            _signal.Release();
+                _workTask.Enqueue(instance);
+            });
+
+        }
+
+        private void WithSignalRelease(Action action)
+        {
+            try
+            {
+                action();
+            }
+            finally
+            {
+                _signal.Release();
+            }
         }
 
         public async Task<IExecuteTask> DequeueAsync(IServiceScope scope, CancellationToken cancellationToken)
