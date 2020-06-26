@@ -1,8 +1,7 @@
 # DLB.AspNetCore.BackgroundTasks
 
-DLB.AspNetCore.BackgroundTasks allow generate new task in AspNetCore 2.2+ with new scope. This behavior is useful when you need generate new task and free the actual request.
- 
-This funcionality is so easy to implement, we only need call a service collection extensions method.
+DLB. AspNetCore. Background Tasks allow generate a new task in AspNetCore 2.2+ with the new scope. This behavior is useful when you need to generate new task and free the actual request.
+This functionality is so easy to implement, we only need to call a service collection extensions method.
 
 ## Requirements
 
@@ -15,7 +14,7 @@ DLB.AspNetCore.BackgroundTasks is avaible in nugget gallery.
 
 ## Usage
 
-First, we need register necesary dependencies, this is achived calling a method in Startup.cs class.
+First, we need register necessary dependencies, this is achieved calling a method in Startup. case class.
 
     public IServiceProvider ConfigureServices(IServiceCollection services)
     {
@@ -23,9 +22,9 @@ First, we need register necesary dependencies, this is achived calling a method 
         services.AddBackgroundQueue();
     }
 
-That is all! If we need generate a new task in background, only need inyect in constructor IBackgroundTaskQueue interface.
+That is all! If we need to generate a new task in the background, only need insect in the constructor IBackgroundTaskQueue interface.
 
-Next we bring two examples:
+Samples:
 
 1) Task with additional parameters
 2) Task without parameters
